@@ -5,5 +5,7 @@
 
 function my_startx()
 {
-  which startx >> /dev/null 2>&1  && [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+  if [ "$(id -u)" != "0" ] ; then
+    which startx >> /dev/null 2>&1  && [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+  fi
 }
