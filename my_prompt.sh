@@ -14,22 +14,22 @@ if [ "$(id -u)" == "0" ] ; then
 fi
 
 MY_HOST_SUM=$(echo $HOSTNAME | md5sum)
-MY_HOST_R=$(printf "%d" 0x${MY_HOST_SUM:0:2})
-MY_HOST_G=$(printf "%d" 0x${MY_HOST_SUM:2:2})
-MY_HOST_B=$(printf "%d" 0x${MY_HOST_SUM:4:2})
+MY_HOST_R=0
+MY_HOST_G=0
+MY_HOST_B=0
 
 #I use dark background so color must be clear enough
-MY_MIN_COLOR=128
-if [ $(( $MY_HOST_R + $MY_HOST_G + $MY_HOST_B )) -lt $MY_MIN_COLOR ] ; then
-  MY_DIFF=$(( ($MY_MIN_COLOR - $MY_HOST_R - $MY_HOST_G - $MY_HOST_B ) / 3 ))
-  MY_HOST_R=$(( $MY_HOST_R + $MY_DIFF ))
-  MY_HOST_G=$(( $MY_HOST_G + $MY_DIFF ))
-  MY_HOST_B=$(( $MY_HOST_B + $MY_DIFF ))
-fi
+MY_MIN_COLOR=170
+while [ $MY_HOST_R -lt $MY_MIN_COLOR ] && [ $MY_HOST_G -lt $MY_MIN_COLOR ] && [ $MY_HOST_B -lt $MY_MIN_COLOR ] ; do
+  MY_HOST_R=$(printf "%d" 0x${MY_HOST_SUM:0:2})
+  MY_HOST_G=$(printf "%d" 0x${MY_HOST_SUM:2:2})
+  MY_HOST_B=$(printf "%d" 0x${MY_HOST_SUM:4:2})
+  MY_HOST_SUM=$(echo $MY_HOST_SUM | md5sum)
+done
 
 MY_HOSTNAME_FORMAT=$(printf '\[\x1b[38;2;%d;%d;%dm\]' $MY_HOST_R $MY_HOST_G $MY_HOST_B)
 
-MY_WD_FORMAT='\[\e[0;34m\]'
+MY_WD_FORMAT='\[\e[0;94m\]'
 
 PS1="${MY_USER_FORMAT}\u${MY_DEFAULT_FORMAT}@\
 ${MY_HOSTNAME_FORMAT}\h${MY_DEFAULT_FORMAT} \
