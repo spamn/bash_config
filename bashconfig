@@ -1,0 +1,10 @@
+#!/bin/bash
+
+BASH_CONFIG_DIR="/etc/bashconfig.d/"
+
+if [ -d "${BASH_CONFIG_DIR}" ] ; then
+    for config in ${BASH_CONFIG_DIR}/*.sh; do
+        [ -r "$config" ] && source "$config"
+    done
+    unset config 
+fi
