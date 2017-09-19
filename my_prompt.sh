@@ -13,10 +13,10 @@ if [ "$(id -u)" == "0" ] ; then
   MY_USER_FORMAT='\[\e[1;31m\]'
 fi
 
-MY_HOST_SUM=$(echo $HOSTNAME | md5sum)
-MY_HOST_R=0
-MY_HOST_G=0
-MY_HOST_B=0
+MY_HOST_SUM=$(echo $HOSTNAME | sha512sum)
+MY_HOST_R=$(printf "%d" 0x${MY_HOST_SUM:0:2})
+MY_HOST_G=$(printf "%d" 0x${MY_HOST_SUM:2:2})
+MY_HOST_B=$(printf "%d" 0x${MY_HOST_SUM:4:2})
 
 #I use dark background so color must be clear enough
 MY_MIN_COLOR=170
